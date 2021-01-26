@@ -22,10 +22,15 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  width: 50%;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+.d-flex {
+  display: flex;
 }
 
 @keyframes App-logo-spin {
