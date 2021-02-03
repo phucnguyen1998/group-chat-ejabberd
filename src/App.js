@@ -9,6 +9,7 @@ import Chat from './Component/Chat'
 function App() {
   let roomchat = 'roomchat4@conference.172.16.1.173'
   const [Message, setMessage] = useState('');
+  const [listMessage, setListMessage] = useState([])
 
   let client = XMPP.createClient({
     jid: "phuc1@172.16.1.173",
@@ -16,6 +17,16 @@ function App() {
     transport: 'websocket',
     wsURL: 'ws://172.16.1.173:5280/websocket'
   });
+
+  useEffect(() => {
+    console.log(2, listMessage);
+  }, [listMessage])
+
+
+  client.on('groupchat', (a) => {
+    console.log(a.from.resource + ' say: ' + a.body);
+    setListMessage(prev => [...prev, a]);
+  })
 
   function handleChange(e) {
     setMessage(e.target.value)
@@ -25,10 +36,7 @@ function App() {
     client.joinRoom(roomchat, 'phuc1@172.16.1.173', {
       status: 'This will be my status in the MUC',
       joinMuc: {
-        password: '',
-        history: {
-          maxstanzas: 20
-        }
+
       }
     });
   }
@@ -90,31 +98,13 @@ function App() {
       });
     });
 
-    client.on('groupchat', (a) => {
-
-      console.log(a.from.resource + ' say: ' + a.body);
-    })
-
     client.on('muc:leave', (a) => {
-      console.log(a.from.resource + " left the room");
+      console.log(a.from.resource + " left the room " + roomchat);
     })
 
     client.on('muc:join', (a) => {
-      console.log(a.from.resource + " entered the room");
+      console.log(a.from.resource + " entered the room " + roomchat);
     })
-
-
-    // client.on('carbon:sent', (msg) => {
-    //   console.log('carbon', msg);
-    // })
-
-    // client.on('chat', (msg) => {
-    //   console.log('chat', msg.body);
-    // });
-
-    // client.on('receipt', (msg) => {
-    //   console.log('receipt', msg)
-    // });
     client.connect();
   }
 
@@ -132,6 +122,7 @@ function App() {
       </header>
       <Chat
         Message={Message}
+        listMessage={listMessage}
         handleChange={handleChange}
         handleClick={handleClick}
       />

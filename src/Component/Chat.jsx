@@ -1,24 +1,18 @@
 import React from 'react';
-import "./style.css"
+import "./style.css";
+import ChatLine from './ChatLine';
 
 function Chat(props) {
 
-    const { handleChange, handleClick, Message } = props;
+    const { handleChange, handleClick, Message, listMessage } = props;
 
     return (
         <>
             <div className="mesgs">
                 <div className="msg_history">
-                    <div className="incoming_msg">
-                        <div className="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil" /> </div>
-                        <div className="received_msg">
-                            <div className="received_withd_msg">
-                                <p>Test which is a new approach to have all
-                  solutions</p>
-                                <span className="time_date"> 11:01 AM    |    June 9</span></div>
-                        </div>
-                    </div>
-
+                    <ChatLine
+                        listMessage={listMessage}
+                    />
                 </div>
                 <div className="type_msg">
                     <div className="input_msg_write">
@@ -33,4 +27,4 @@ function Chat(props) {
     );
 }
 
-export default Chat;
+export default React.memo(Chat);
