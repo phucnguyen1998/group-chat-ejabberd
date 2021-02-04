@@ -185,3 +185,7 @@ img {
     height: 516px;
     overflow-y: auto;
 }
+
+.msg_line {
+    text-align: left;
+}

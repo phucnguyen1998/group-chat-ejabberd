@@ -11,20 +11,17 @@ function App() {
   const [Message, setMessage] = useState('');
   const [listMessage, setListMessage] = useState([])
 
+  const jid = "phuc1@172.16.1.173";
+
   let client = XMPP.createClient({
-    jid: "phuc1@172.16.1.173",
+    jid: jid,
     password: 'phuc1',
     transport: 'websocket',
     wsURL: 'ws://172.16.1.173:5280/websocket'
   });
 
-  useEffect(() => {
-    console.log(2, listMessage);
-  }, [listMessage])
-
-
   client.on('groupchat', (a) => {
-    console.log(a.from.resource + ' say: ' + a.body);
+    // console.log(a.from.resource + ' say: ' + a.body);
     setListMessage(prev => [...prev, a]);
   })
 
@@ -36,7 +33,6 @@ function App() {
     client.joinRoom(roomchat, 'phuc1@172.16.1.173', {
       status: 'This will be my status in the MUC',
       joinMuc: {
-
       }
     });
   }
@@ -71,7 +67,7 @@ function App() {
   function handleClick() {
     axios.post('http://172.16.1.173:5280/api/subscribe_room', {
       "user": "phuc1@172.16.1.173",
-      "nick": "Tommy",
+      "nick": 'Phucs Nguyeenx',
       "room": roomchat,
       "nodes": "urn:xmpp:mucsub:nodes:messages,urn:xmpp:mucsub:nodes:affiliations"
     }).then(function (response) {

@@ -5,16 +5,17 @@ function ChatLine(props) {
     return (
         <>
             {
-                listMessage && listMessage.forEach(item => {
-                    <div className="incoming_msg">
+                listMessage && listMessage.map((item, index) => (
+                    <div className="incoming_msg" key={index.toString()}>
                         <div className="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil" /> </div>
                         <div className="received_msg">
                             <div className="received_withd_msg">
-                                <p>{item.body}</p>
-                                <span className="time_date"> 11:01 AM    |    June 9</span></div>
+                                <p className="msg_line">{item.from.resource} : {item.body}</p>
+                                <span className="time_date"> </span>
+                            </div>
                         </div>
                     </div>
-                })
+                ))
 
             }</>
     );
