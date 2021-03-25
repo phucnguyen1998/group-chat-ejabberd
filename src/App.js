@@ -20,68 +20,6 @@ function App() {
     wsURL: 'ws://172.16.1.173:5280/websocket'
   });
 
-  client.on('groupchat', (a) => {
-    // console.log(a.from.resource + ' say: ' + a.body);
-    setListMessage(prev => [...prev, a]);
-  })
-
-  function handleChange(e) {
-    setMessage(e.target.value)
-  }
-
-  function JoinRoom() {
-    client.joinRoom(roomchat, 'phuc1@172.16.1.173', {
-      status: 'This will be my status in the MUC',
-      joinMuc: {
-      }
-    });
-  }
-
-  function UnSubscribe() {
-    axios.post('http://172.16.1.173:5280/api/unsubscribe_room', {
-      "user": "phuc1@172.16.1.173",
-      "room": roomchat
-    }).then(function (response) {
-      // console.log('Un Subscribe success');
-    }).catch(function (error) {
-      console.log('Un Subscribe Fail');
-      console.log(error);
-    });
-  }
-
-  function sendMessage() {
-    axios.post('http://172.16.1.173:5280/api/send_message', {
-      "type": "groupchat",
-      "from": "phuc1@172.16.1.173",
-      "to": roomchat,
-      "subject": "No",
-      "body": Message
-    }).then(function (response) {
-      UnSubscribe()
-      setMessage("")
-    }).catch(function (error) {
-      console.log(error);
-    });
-  }
-
-  function handleClick() {
-    axios.post('http://172.16.1.173:5280/api/subscribe_room', {
-      "user": "phuc1@172.16.1.173",
-      "nick": 'Phucs Nguyeenx',
-      "room": roomchat,
-      "nodes": "urn:xmpp:mucsub:nodes:messages,urn:xmpp:mucsub:nodes:affiliations"
-    }).then(function (response) {
-      sendMessage()
-    }).catch(function (error) {
-      console.log('Subscribe fail');
-      console.log(error);
-    });
-  }
-
-  function leaveRoom() {
-    client.leaveRoom(roomchat, 'phuc1@172.16.1.173', {});
-  }
-
   function ConnectServer() {
     client.on('session:started', () => {
       client.getRoster(() => {
@@ -107,6 +45,70 @@ function App() {
   useEffect(() => {
     ConnectServer()
   }, [])
+
+  client.on('groupchat', (a) => {
+    console.log(a.from.resource + ' say: ' + a.body);
+    setListMessage(prev => [...prev, a]);
+  })
+
+  function handleChange(e) {
+    setMessage(e.target.value)
+  }
+
+  function JoinRoom() {
+    client.joinRoom(roomchat, 'phuc1@172.16.1.173', {
+      status: 'This will be my status in the MUC',
+      joinMuc: {
+      }
+    });
+  }
+
+  // function UnSubscribe() {
+  //   axios.post('http://172.16.1.173:5280/api/unsubscribe_room', {
+  //     "user": "phuc1@172.16.1.173",
+  //     "room": roomchat
+  //   }).then(function (response) {
+  //     // console.log('Un Subscribe success');
+  //   }).catch(function (error) {
+  //     console.log('Un Subscribe Fail');
+  //     console.log(error);
+  //   });
+  // }
+
+  function sendMessage() {
+    axios.post('http://172.16.1.173:5280/api/send_message', {
+      "type": "groupchat",
+      "from": "phuc1@172.16.1.173",
+      "to": roomchat,
+      "subject": "No",
+      "body": Message
+    }).then(function (response) {
+      // UnSubscribe()
+      setMessage("")
+    }).catch(function (error) {
+      console.log(error);
+    });
+  }
+
+  function handleClick() {
+    axios.post('http://172.16.1.173:5280/api/subscribe_room', {
+      "user": "phuc1@172.16.1.173",
+      "nick": 'Phucs Nguyeenx',
+      "room": roomchat,
+      "nodes": "urn:xmpp:mucsub:nodes:messages,urn:xmpp:mucsub:nodes:affiliations"
+    }).then(function (response) {
+      sendMessage()
+    }).catch(function (error) {
+      console.log('Subscribe fail');
+      console.log(error);
+    });
+  }
+
+  function leaveRoom() {
+    client.leaveRoom(roomchat, 'phuc1@172.16.1.173', {});
+  }
+
+
 
   return (
     <div className="App d-flex">
